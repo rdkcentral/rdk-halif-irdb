@@ -17,8 +17,8 @@
  * limitations under the License.
 */
 
-#ifndef __CTRLM_IRDB_PLUGIN_H__
-#define __CTRLM_IRDB_PLUGIN_H__
+#ifndef CTRLM_IRDB_PLUGIN_H_
+#define CTRLM_IRDB_PLUGIN_H_
 
 #include <string>
 #include <map>
@@ -55,7 +55,11 @@ typedef enum {
 typedef struct {
     /** @brief Vendor name. */
     std::string   name;
-    /** @brief Bitmask of RCU capabilities supported by this vendor. */
+    /** 
+     * @brief Bitmask of RCU capabilities supported by this vendor.
+     * 
+     * This is a platform specific value defined by the RCU IR service implementation.
+     */
     unsigned char rcu_support_bitmask;
 } ctrlm_irdb_vendor_info_t;
 
@@ -87,7 +91,12 @@ typedef struct {
     std::string model;
     /** @brief Database identifier associated with the result. */
     std::string id;
-    /** @brief Relative confidence or priority assigned to the result. */
+    /** 
+     * @brief Relative confidence or priority assigned to the result. 
+     * Higher values indicate greater confidence or priority.  The caller
+     * can sort in descending order to prioritize higher confidence results,
+     * while keeping the relative order of entries with the same rank.
+     */
     int         rank;
 } ctrlm_irdb_autolookup_entry_ranked_t;
 
@@ -183,7 +192,7 @@ bool ctrlm_irdb_get_ir_code_set(ctrlm_irdb_ir_code_set_t &code_set, ctrlm_irdb_d
 
 /**
  * @brief Finds ranked IR code sets using an HDMI InfoFrame.
- * @param[out] codes Receives ranked matching code sets.
+ * @param[out] codes Receives ranked matching code sets.  Higher rank values indicate greater confidence or priority.
  * @param[out] type Receives the matched device type.
  * @param[in] infoframe InfoFrame data to match.
  * @param[in] infoframe_len Length of `infoframe` in bytes.
@@ -193,7 +202,7 @@ bool ctrlm_irdb_get_ir_codes_by_infoframe(ctrlm_irdb_autolookup_ranked_list_t &c
 
 /**
  * @brief Finds ranked IR code sets using EDID data.
- * @param[out] codes Receives ranked matching code sets.
+ * @param[out] codes Receives ranked matching code sets.  Higher rank values indicate greater confidence or priority.
  * @param[out] type Receives the matched device type.
  * @param[in] edid EDID data to match.
  * @param[in] edid_len Length of `edid` in bytes.
@@ -203,7 +212,7 @@ bool ctrlm_irdb_get_ir_codes_by_edid(ctrlm_irdb_autolookup_ranked_list_t &codes,
 
 /**
  * @brief Finds ranked IR code sets using HDMI-CEC device information.
- * @param[out] codes Receives ranked matching code sets.
+ * @param[out] codes Receives ranked matching code sets.  Higher rank values indicate greater confidence or priority.
  * @param[out] type Receives the matched device type.
  * @param[in] osd CEC on-screen display name.
  * @param[in] vendor_id CEC vendor identifier.
