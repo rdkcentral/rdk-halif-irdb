@@ -108,7 +108,7 @@ typedef std::vector<ctrlm_irdb_autolookup_entry_ranked_t> ctrlm_irdb_autolookup_
 extern "C" {
 #endif
 
-/** @brief Returns the installed IR database version. */
+/** @brief Returns the version of the active IR database. */
 std::string irdb_version();
 
 /**
@@ -139,21 +139,25 @@ bool ctrlm_irdb_initialize();
 bool ctrlm_irdb_get_supported_vendor_info(std::vector<ctrlm_irdb_vendor_info_t> &info);
 
 /**
- * @brief Sets the IR database vendor supported by the RCU.
+ * @brief Sets the active IR database vendor supported by the RCU.
+ * 
+ * This is only needed if there are multiple IR database vendors available.
+ * If there is only one vendor, this call is not necessary.
+ * 
  * @param[in] vendor Vendor information and RCU support mask.
  * @return `true` when the preferred vendor is set successfully.
  */
 bool ctrlm_irdb_set_preferred_vendor(const ctrlm_irdb_vendor_info_t &vendor);
 
 /**
- * @brief Returns information about the currently selected vendor.
+ * @brief Returns information about the currently active vendor.
  * @param[out] info Receives the selected vendor information.
  * @return `true` when the vendor information is retrieved successfully.
  */
 bool ctrlm_irdb_get_vendor_info(ctrlm_irdb_vendor_info_t &info);
 
 /**
- * @brief Lists manufacturers matching a device type and prefix.
+ * @brief Queries active IR database for manufacturers matching a device type and prefix.
  * @param[out] manufacturers Receives matching manufacturer names.
  * @param[in] type Device type to search.
  * @param[in] prefix Optional manufacturer-name prefix.
@@ -162,7 +166,7 @@ bool ctrlm_irdb_get_vendor_info(ctrlm_irdb_vendor_info_t &info);
 bool ctrlm_irdb_get_manufacturers(ctrlm_irdb_manufacturer_list_t &manufacturers, ctrlm_irdb_dev_type_t type, const std::string &prefix);
 
 /**
- * @brief Lists models matching a manufacturer, device type, and prefix.
+ * @brief Queries active IR database for models matching a manufacturer, device type, and prefix.
  * @param[out] models Receives matching model names.
  * @param[in] type Device type to search.
  * @param[in] manufacturer Manufacturer to search.
@@ -172,7 +176,7 @@ bool ctrlm_irdb_get_manufacturers(ctrlm_irdb_manufacturer_list_t &manufacturers,
 bool ctrlm_irdb_get_models(ctrlm_irdb_model_list_t &models, ctrlm_irdb_dev_type_t type, const std::string &manufacturer, const std::string &prefix);
 
 /**
- * @brief Lists code-set identifiers for a manufacturer and model.
+ * @brief Queries active IR database for code-set identifiers for a manufacturer and model.
  * @param[out] ids Receives matching entry identifiers.
  * @param[in] type Device type to search.
  * @param[in] manufacturer Manufacturer to search.
@@ -182,7 +186,7 @@ bool ctrlm_irdb_get_models(ctrlm_irdb_model_list_t &models, ctrlm_irdb_dev_type_
 bool ctrlm_irdb_get_entry_ids(ctrlm_irdb_entry_id_list_t &ids, ctrlm_irdb_dev_type_t type, const std::string &manufacturer, const std::string &model);
 
 /**
- * @brief Retrieves an IR code set by device type and database identifier.
+ * @brief Queries active IR database for an IR code set by device type and database identifier.
  * @param[out] code_set Receives the code set.
  * @param[in] type Device type of the code set.
  * @param[in] id Database identifier of the code set.
@@ -191,7 +195,7 @@ bool ctrlm_irdb_get_entry_ids(ctrlm_irdb_entry_id_list_t &ids, ctrlm_irdb_dev_ty
 bool ctrlm_irdb_get_ir_code_set(ctrlm_irdb_ir_code_set_t &code_set, ctrlm_irdb_dev_type_t type, const std::string &id);
 
 /**
- * @brief Finds ranked IR code sets using an HDMI InfoFrame.
+ * @brief Queries active IR database for ranked IR code sets using an HDMI InfoFrame.
  * @param[out] codes Receives ranked matching code sets.  Higher rank values indicate greater confidence or priority.
  * @param[out] type Receives the matched device type.
  * @param[in] infoframe InfoFrame data to match.
@@ -201,7 +205,7 @@ bool ctrlm_irdb_get_ir_code_set(ctrlm_irdb_ir_code_set_t &code_set, ctrlm_irdb_d
 bool ctrlm_irdb_get_ir_codes_by_infoframe(ctrlm_irdb_autolookup_ranked_list_t &codes, ctrlm_irdb_dev_type_t &type, unsigned char *infoframe, unsigned int infoframe_len);
 
 /**
- * @brief Finds ranked IR code sets using EDID data.
+ * @brief Queries active IR database for ranked IR code sets using EDID data.
  * @param[out] codes Receives ranked matching code sets.  Higher rank values indicate greater confidence or priority.
  * @param[out] type Receives the matched device type.
  * @param[in] edid EDID data to match.
@@ -211,7 +215,7 @@ bool ctrlm_irdb_get_ir_codes_by_infoframe(ctrlm_irdb_autolookup_ranked_list_t &c
 bool ctrlm_irdb_get_ir_codes_by_edid(ctrlm_irdb_autolookup_ranked_list_t &codes, ctrlm_irdb_dev_type_t &type, unsigned char *edid, unsigned int edid_len);
 
 /**
- * @brief Finds ranked IR code sets using HDMI-CEC device information.
+ * @brief Queries active IR database for ranked IR code sets using HDMI-CEC device information.
  * @param[out] codes Receives ranked matching code sets.  Higher rank values indicate greater confidence or priority.
  * @param[out] type Receives the matched device type.
  * @param[in] osd CEC on-screen display name.
