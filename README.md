@@ -192,7 +192,7 @@ flowchart LR
 
 The automatic lookup functions return ranked entries and the matched device type.  A higher rank value indicates greater confidence or priority.  This can be used to order codes returned from different sources.  For example, EDID information may be determined to be more complete than CEC data, so the codes returned from EDID data should have a higher rank value than the codes returned from CEC data.
 
-The caller can sort in descending rank order to so that higher confidence results are listed first, while keeping the relative order of entries with the same rank.
+The caller can sort in descending rank order so that higher confidence results are listed first, while keeping the relative order of entries with the same rank.
 - `ctrlm_irdb_get_ir_codes_by_infoframe()` uses HDMI InfoFrame data.
 - `ctrlm_irdb_get_ir_codes_by_edid()` uses EDID data.
 - `ctrlm_irdb_get_ir_codes_by_cec()` uses a CEC OSD name, vendor ID, and logical address.
